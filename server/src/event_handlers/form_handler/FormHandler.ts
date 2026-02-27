@@ -35,16 +35,12 @@ export default class FormHandler extends InteractionHandler {
                     status: status
                 }
 
-                try {
-                    const database_result: UpdateResult<any> = await database_repository.createOrUpdateFactionGoals(faction_id, data);
-                    if (!database_result) {
-                        await this.form_interaction.reply({
-                            content: `Could not update **${goal_name}**. Please try again or contact the bot administrator`,
-                            flags: MessageFlags.Ephemeral
-                        });
-                    }
-                } catch (error) {
-                    throw error;
+                const database_result: UpdateResult<any> = await database_repository.createOrUpdateFactionGoals(faction_id, data);
+                if (!database_result) {
+                    await this.form_interaction.reply({
+                        content: `Could not update **${goal_name}**. Please try again or contact the bot administrator`,
+                        flags: MessageFlags.Ephemeral
+                    });
                 }
 
                 await this.form_interaction.reply({
@@ -66,16 +62,12 @@ export default class FormHandler extends InteractionHandler {
                     return;
                 }
 
-                try {
-                    const deletion_result: boolean = await database_repository.deleteFactionGoal(goal_name);
-                    if (!deletion_result) {
-                        await this.form_interaction.reply({
-                            content: `Could not delete **${goal_name}**. Please try again or contact the bot administrator`,
-                            flags: MessageFlags.Ephemeral
-                        });
-                    }
-                } catch (error) {
-                    throw error;
+                const deletion_result: boolean = await database_repository.deleteFactionGoal(goal_name);
+                if (!deletion_result) {
+                    await this.form_interaction.reply({
+                        content: `Could not delete **${goal_name}**. Please try again or contact the bot administrator`,
+                        flags: MessageFlags.Ephemeral
+                    });
                 }
 
                 await this.form_interaction.reply({
@@ -101,25 +93,20 @@ export default class FormHandler extends InteractionHandler {
                     discord_areas_looted_channel_id: faction_areas_looted_channel_id
                 }
 
-                try {
-                    const database_result: UpdateResult<any> | null = await database_repository.update(data);
-                    if (!database_result) {
-                        await this.form_interaction.reply({
-                            content: `Could not update bot data for guild **${faction_id}**. Please try again or contact the bot administrator`,
-                            flags: MessageFlags.Ephemeral
-                        });
-                        return;
-                    }
+                const database_result: UpdateResult<any> | null = await database_repository.update(data);
+                if (!database_result) {
                     await this.form_interaction.reply({
+                        content: `Could not update bot data for guild **${faction_id}**. Please try again or contact the bot administrator`,
+                        flags: MessageFlags.Ephemeral
+                    });
+                        return;
+                    } else {
+                        await this.form_interaction.reply({
                         content: `Bot data for guild **${faction_id}** updated successfully`,
                         flags: MessageFlags.Ephemeral
                     });
-                } catch (error) {
-                    throw error;
-                }
-
                 break;
-            }
+            }};
 
             case form_id === 'farming_form': {
                 await this.form_interaction.reply({

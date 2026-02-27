@@ -1,5 +1,4 @@
-import * as dotenv from 'dotenv';
-dotenv.config();
+import 'dotenv/config';
 
 /*
 Developer-defined imports
@@ -60,11 +59,10 @@ const database_connection_max_pool_size: number | undefined = process.env.DATABA
 const kush_faction_server_id: string | undefined = process.env.KUSH_FACTION_ID;
 const kush_faction_the_ogs_role_id: string | undefined = process.env.KUSH_THE_OGS_ROLE_ID;
 const kush_faction_kush_boys_role_id: string | undefined = process.env.KUSH_KUSH_BOYS_ROLE_ID;
-const kush_faction_treasure_toker_role_id: string | undefined = process.env.KUSH_TREASURE_TOKER_ROLE_ID;
 const kush_faction_buy_click_on_blu_ray_dvd_role_id: string | undefined = process.env.KUSH_BUY_CLICK_ON_BLU_RAY_DVD_ROLE_ID;
 const kush_faction_big_pimpin_role_id: string | undefined = process.env.KUSH_BIG_PIMPIN_ROLE_ID;
 
-const test_channel_id: string | undefined = process.env.TEST_CHANNEL_ID;
+const testing_server_channel_id: string | undefined = process.env.TEST_CHANNEL_ID;
 
 /**
  * Declaration of custom discord client. You must explicitly define what the bot intends to do in the Discord server, so it has necessary permissions

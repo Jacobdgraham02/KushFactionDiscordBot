@@ -40,13 +40,9 @@ export default class CreateBotFarmingButton implements ICommand {
             `**5.** /pzfans-map-links - Creates a list of pzfans map links`
         ];
 
-        try {
-            await interaction.reply({
-                content: `**Available Commands:**\n${command_list.join('\n')}`,
-                flags: MessageFlags.Ephemeral
-            });
-        } catch (error) {
-            throw error;
-        }
+        await interaction.reply({
+            content: `**Available Commands:**\n${command_list.join('\n')}`,
+            flags: MessageFlags.Ephemeral
+        });       
     }
 }

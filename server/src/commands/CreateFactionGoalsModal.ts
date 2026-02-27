@@ -70,10 +70,6 @@ export default class CreateFactionGoalsModal implements ICommand {
 
         modal.addComponents(goal_name_row, goal_description_row, mpc_value_row, silver_bullion_row, gold_bullion_row);
 
-        try {
-            await interaction.showModal(modal);
-        } catch (error) {
-            throw error;
-        }
+        await interaction.showModal(modal);
     }
 }

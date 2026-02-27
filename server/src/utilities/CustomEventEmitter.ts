@@ -28,11 +28,7 @@ export default class CustomEventEmitter extends EventEmitter {
      * @param bot_channel_data structure of document used to update bot data
      */
     public emitUpdateBotChannelDataEvent(channel: Channel, bot_channel_data: IBotDataDocument): void {
-        try {
-            this.emit(`updateBotChannelData`, channel, bot_channel_data);
-        } catch (error) {
-            throw error;
-        }
+        this.emit(`updateBotChannelData`, channel, bot_channel_data);
     }
 
     /**
@@ -40,11 +36,7 @@ export default class CustomEventEmitter extends EventEmitter {
      * @param channel_id the target Discord channel id at which to send the faction goals
      */
     public emitShowFactionGoalsEvent(channel_id: string): void {
-        try {
-            this.emit('showFactionGoals', channel_id);
-        } catch (error) {
-            throw error;
-        }
+        this.emit('showFactionGoals', channel_id);
     }
 
     /**
@@ -52,10 +44,6 @@ export default class CustomEventEmitter extends EventEmitter {
      * @param channel_id the target Discord channel id at which to send the data
      */
     public emitShowBotChannelDataEvent(channel_id: string): void {
-        try {
-            this.emit('showBotChannelData', channel_id);
-        } catch (error) {
-            throw error;
-        }
+        this.emit('showBotChannelData', channel_id);
     }
 }

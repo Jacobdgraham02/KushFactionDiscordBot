@@ -12,15 +12,11 @@ export default class ShowFactionGoals implements ICommand {
         const custom_event_emitter: CustomEventEmitter = CustomEventEmitter.getCustomEventEmitterInstance();
         const current_channel_id: string = interaction.channel.id;
 
-        try {
-            custom_event_emitter.emitShowFactionGoalsEvent(current_channel_id);
+        custom_event_emitter.emitShowFactionGoalsEvent(current_channel_id);
 
-            await interaction.reply({
-                content: `Faction goals will be showed shortly`,
-                flags: MessageFlags.Ephemeral
-            });
-        } catch (error) {
-            throw error;
-        }
+        await interaction.reply({
+            content: `Faction goals will be showed shortly`,
+            flags: MessageFlags.Ephemeral
+        });
     }
 }

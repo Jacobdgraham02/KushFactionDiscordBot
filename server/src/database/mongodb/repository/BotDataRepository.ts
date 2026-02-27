@@ -46,7 +46,6 @@ export class BotDataRepository extends DatabaseRepository<any> {
      * @returns IBotDataDocument or null depending on if bot data is present
      */
     async findById(id: string): Promise<IBotDataDocument | null> {
-        try {
             const bot_data_collection: IBotDataDocument | null = await this.collection.findOne({ discord_guild_id: id});
 
             if (!bot_data_collection) {
@@ -61,9 +60,6 @@ export class BotDataRepository extends DatabaseRepository<any> {
                 discord_farming_channel_id: bot_data_collection.discord_areas_looted_channel_id,
                 discord_areas_looted_channel_id: bot_data_collection.discord_areas_looted_channel_id,
             } as IBotDataDocument;
-        } catch (error) {
-            throw error;
-        }
     }
 
     /**
@@ -72,16 +68,12 @@ export class BotDataRepository extends DatabaseRepository<any> {
      * @returns Promise<UpdateResult<any>> The update result object
      */
     async create(data: IBotDataDocument): Promise<UpdateResult<any>> {
-        try {
             const create_data_result: UpdateResult<any> = await this.collection.updateOne(
                 {discord_guild_id: data.discord_guild_id},
                 {$set: data},
                 {upsert: true}
             );
             return create_data_result;
-        } catch (error) {
-            throw error;
-        }
     }
 
     /**
@@ -90,16 +82,12 @@ export class BotDataRepository extends DatabaseRepository<any> {
      * @returns The modified bot data document if found, otherwise null
      */
     async update(data: IBotDataDocument): Promise<UpdateResult<any> | null> {
-        try {
             const update_data_result: UpdateResult<any> = await this.collection.updateOne(
                 {discord_guild_id: data.discord_guild_id},
                 {$set: data},
                 {upsert: true}
             );
             return update_data_result;
-        } catch (error) {
-            throw error;
-        }
     }
 
     /**
@@ -108,12 +96,8 @@ export class BotDataRepository extends DatabaseRepository<any> {
      * @returns If the bot data was deleted successfully
      */
     async delete(id: string): Promise<boolean> {
-        try {
             const deletion_result: DeleteResult = await this.collection.deleteOne({ discord_guild_id: id });
             return deletion_result.deletedCount >= 1;
-        } catch (error) {
-            throw error;
-        }
     }
 
     /**
@@ -123,16 +107,12 @@ export class BotDataRepository extends DatabaseRepository<any> {
      * @return The update result from the update operation
      */
     async createOrUpdateFactionGoals(id: string, data: IFactionGoals): Promise<UpdateResult<any>> {
-        try {
             const create_or_update_faction_goals_result = await this.collection.updateOne(
                 {faction_goals_id: id},
                 {$set: data},
                 {upsert: true}
             );
             return create_or_update_faction_goals_result;
-        } catch (error) {
-            throw error;
-        }
     }
 
     /**
@@ -141,7 +121,6 @@ export class BotDataRepository extends DatabaseRepository<any> {
      * @return IFactionGoals formatted object if data could be found, null otherwise
      */
     async getFactionGoals(id: string): Promise<IFactionGoals[] | null> {
-        try {
             const collection: Collection<Document> = this.database_instance.collection(Collections.FACTION_GOALS);
 
             const faction_goals  = await this.collection.find({ faction_id: id }).toArray();
@@ -156,9 +135,6 @@ export class BotDataRepository extends DatabaseRepository<any> {
                 description: goal.description || "",
                 status: goal.status || "TBA"
             })) as IFactionGoals[];
-        } catch (error) {
-            throw error;
-        }
     }
 
     /**
@@ -167,7 +143,6 @@ export class BotDataRepository extends DatabaseRepository<any> {
      * @returns `true` if the goal was successfully deleted, `false` otherwise
      */
     async deleteFactionGoal(goal_name: string): Promise<boolean> {
-        try {
             const collection: Collection<Document> = this.database_instance.collection(Collections.FACTION_GOALS);
 
             const delete_result: DeleteResult = await collection.deleteOne({ goal_name });
@@ -177,9 +152,6 @@ export class BotDataRepository extends DatabaseRepository<any> {
             }
 
             return true;
-        } catch (error) {
-            throw error;
-        }
     }
 
     /**
@@ -188,7 +160,6 @@ export class BotDataRepository extends DatabaseRepository<any> {
      * @return IFactionGoals formatted object if data could be found, null otherwise
      */
     async getFactionGoal(name: string): Promise<IFactionGoals | null> {
-        try {
             const collection: Collection<Document> = this.database_instance.collection(Collections.FACTION_GOALS);
 
             const faction_goal  = await this.collection.findOne({ goal_name: name });
@@ -203,9 +174,6 @@ export class BotDataRepository extends DatabaseRepository<any> {
                 description: faction_goal.description || "",
                 status: faction_goal.status || "TBA"
             } as IFactionGoals;
-        } catch (error) {
-            throw error;
-        }
     }
 
     /**
@@ -216,16 +184,12 @@ export class BotDataRepository extends DatabaseRepository<any> {
      * @return The update result from the update operation
      */
     async createOrUpdateFactionResources(id: string, data: IFactionResources): Promise<UpdateResult<any>> {
-        try {
             const create_or_update_faction_resources_result: UpdateResult<any> = await this.collection.updateOne(
                 {faction_resources_id: id},
                 {$set: { resources: data.resources }},
                 {upsert: true}
             );
             return create_or_update_faction_resources_result;
-        } catch (error) {
-            throw error;
-        }
     }
 
     /**
@@ -233,7 +197,6 @@ export class BotDataRepository extends DatabaseRepository<any> {
      * @param id The id of the faction to get resources for
      */
     async getFactionResources(id: string): Promise<IFactionResources[] | null> {
-        try {
             const collection: Collection<Document> = this.database_instance.collection(Collections.FACTION_RESOURCES);
             const faction_resources = await this.collection.find({ faction_id: id }).toArray()
 
@@ -245,9 +208,6 @@ export class BotDataRepository extends DatabaseRepository<any> {
                 faction_id: resource.faction_id,
                 resources: resource.resources || {}
             })) as IFactionResources[];
-        } catch (error) {
-            throw error;
-        }
     }
 
     /**
@@ -257,15 +217,11 @@ export class BotDataRepository extends DatabaseRepository<any> {
      * @return The update result from the upsert operation
      */
     async createOrUpdateFactionBuild(id: string, data: IFactionTraitBuild): Promise<UpdateResult<any>> {
-        try {
             const create_or_update_faction_build_result: UpdateResult<any> = await this.collection.updateOne(
                 {discord_user_id: id},
                 {$set: data},
                 {upsert: true}
             );
             return create_or_update_faction_build_result;
-        } catch (error) {
-            throw error;
-        }
     }
 }

@@ -48,7 +48,6 @@ export default class DatabaseConnectionManager {
      */
     async initializeMongodbDatabaseInstance(): Promise<void> {
         if (this.database_connection_string != null) {
-            try {
                 this.mongodb_database_client = new MongoClient(this.database_connection_string, {
                     maxPoolSize: this.database_connection_maximum_pool_size,
                     minPoolSize: this.database_connection_minimum_pool_size,
@@ -60,9 +59,6 @@ export default class DatabaseConnectionManager {
                 });
                 await this.mongodb_database_client.connect();
                 this.database_instance = this.mongodb_database_client.db(this.database_name);
-            } catch (error) {
-                throw error;
-            }
         } else {
             throw new Error(`The database connection string was undefined`);
         }
@@ -73,12 +69,8 @@ export default class DatabaseConnectionManager {
      */
     async closeMongodbDatabaseInstanceConnectionPool(): Promise<void> {
         if (this.mongodb_database_client) {
-            try {
                 await this.mongodb_database_client.close();
                 this.database_instance = null;
-            } catch (error) {
-                throw error;
-            }
         } else {
             throw new Error(`The mongodb client is not initialized`);
         }
