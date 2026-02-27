@@ -7,7 +7,6 @@ Developer-defined imports
 import DatabaseConnectionManager from "./database/mongodb/DatabaseConnectionManager";
 import ButtonHandler from "./event_handlers/button_handler/ButtonHandler";
 import FormHandler from "./event_handlers/form_handler/FormHandler";
-import I18nLocalisation from "./utilities/I18nLocalisation";
 import CustomEventEmitter from "./utilities/CustomEventEmitter";
 
 /*
@@ -15,11 +14,6 @@ Native imports from Node.js
  */
 import path from "node:path";
 import * as fs from "node:fs";
-
-/*
-Imports from external libraries
- */
-import i18n from "i18next";
 
 /*
 Imports for use with the discord.js library
@@ -130,14 +124,7 @@ async function loadSetupCommandsIntoCollection(): Promise<void> {
 async function registerSetupCommandsWithBot(bot_token: string, bot_application_id: string, guild_id: string): Promise<void> {
        if (bot_token && bot_application_id && guild_id) {
               const rest = new REST({version:"10"}).setToken(bot_token);
-
-              try {
-                  await rest.put(Routes.applicationGuildCommands(bot_application_id, guild_id), {
-                      body: commands,
-                  });
-              } catch (error) {
-                  throw error;
-              }
+                await rest.put(Routes.applicationGuildCommands(bot_application_id, guild_id), { body: commands });
        }
 }
 
@@ -166,11 +153,7 @@ async function createDatabaseConnection(): Promise<void> {
 }
 
 async function closeDatabaseConnection(): Promise<void> {
-    try {
-        await database_connection_manager.closeMongodbDatabaseInstanceConnectionPool();
-    } catch (error) {
-        throw error;
-    }
+    await database_connection_manager.closeMongodbDatabaseInstanceConnectionPool();
 }
 
 /**
@@ -305,16 +288,12 @@ discord_client_instance.on(Events.GuildCreate,
             await closeDatabaseConnection();
         }
         await createDatabaseConnection();
-        try {
-            if (guild) {
-                // await createBotCategoryAndChannels(guild);
-            }
-            await loadSetupCommandsIntoCollection();
-            if (discord_bot_token) {
-                await registerSetupCommandsWithBot(discord_bot_token, discord_application_id, kush_faction_server_id);
-            }
-        } catch (error) {
-            throw error;
+        if (guild) {
+            // await createBotCategoryAndChannels(guild);
+        }
+        await loadSetupCommandsIntoCollection();
+        if (discord_bot_token) {
+            await registerSetupCommandsWithBot(discord_bot_token, discord_application_id, kush_faction_server_id);
         }
 });
 
@@ -325,7 +304,6 @@ discord_client_instance.login(discord_bot_token);
  * @param guild the Guild (server) on Discord
  */
 async function createBotCategoryAndChannels(guild: Guild): Promise<void> {
-    try {
         const category_creation_response: CategoryChannel = await guild.channels.create({
             name: `APA Season 10 bot`,
             type: ChannelType.GuildCategory
@@ -372,9 +350,6 @@ async function createBotCategoryAndChannels(guild: Guild): Promise<void> {
         bot_data.discord_areas_looted_channel_id = discord_channel_ids.get("discord_areas_looted_channel_id");
 
         await database_repository.create(bot_data)
-    } catch (error) {
-        throw error;
-    }
 }
 
 /**
@@ -412,22 +387,17 @@ custom_event_emitter.on("updateBotChannelData",
      * @param bot_channel_data_document the structure of the document containing the bot channel data
      */
     async(channel: Channel, bot_channel_data_document: IBotDataDocument): Promise<void> => {
-        try {
-            const create_bot_data_response: UpdateResult<any> = await database_repository.create(bot_channel_data_document);
-            if (channel.isSendable()) {
-                channel.send({
-                    content: `Bot has been updated with new Discord channel ids`
-                });
-            }
-        } catch (error) {
-            throw error;
+        const create_bot_data_response: UpdateResult<any> = await database_repository.create(bot_channel_data_document);
+        if (channel.isSendable()) {
+            channel.send({
+                 content: `Bot has been updated with new Discord channel ids`
+            });
         }
-    });
+});
 
 custom_event_emitter.on("showFactionGoals",
 
     async(channel_id: string): Promise<void> => {
-        try {
             const show_faction_goals_response: IFactionGoals[] | null = await database_repository.getFactionGoals(kush_faction_server_id);
             const channel: Channel | undefined = discord_client_instance.channels.cache.get(channel_id);
             if (!channel) {
@@ -466,15 +436,11 @@ custom_event_emitter.on("showFactionGoals",
                     channel.send({embeds: [embedded_message_builder], components: [button_action_row]});
                 }
             }
-        } catch (error) {
-            throw error;
-        }
-    });
+});
 
 custom_event_emitter.on("showBotChannelData",
 
     async(channel_id: string): Promise<void> => {
-        try {
             const show_bot_channel_data: IBotDataDocument | null = await database_repository.findById(kush_faction_server_id);
             const channel: Channel | undefined = discord_client_instance.channels.cache.get(channel_id);
             if (!channel) {
@@ -512,7 +478,4 @@ custom_event_emitter.on("showBotChannelData",
 
                 channel.send({embeds: [embedded_message_builder], components: [button_action_row]});
             }
-        } catch (error) {
-            throw error;
-        }
-    });
+});
