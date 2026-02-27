@@ -41,6 +41,8 @@
         <ul>
             <li><a href="https://www.typescriptlang.org/docs/">TypeScript</li>
             <li><a href="https://discord.js.org/">Discord.js</li>
+            <li><a href="https://nodejs.org/en">Node.js</li>
+            <li><a href="https://typescript-eslint.io/">ESLint for TypeScript</li>
         </ul>
         <p><a href="#readme-top">Back to top</a></p>
     </article>
