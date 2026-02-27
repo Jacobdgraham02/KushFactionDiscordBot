@@ -7,6 +7,7 @@
         <ol>
             <li><a href="#about-the-project" title="A link to view information about why this bot is being built">About the project</a></li>
             <li><a href="#screenshots" title="Screenshots of the bot in action">Screenshots</a></li>
+            <li><a href="#technologies" title="Technologies used in this project">Technologies</a></li>
         </ol>
     </article>
 </section>
@@ -29,6 +30,18 @@
         <p>
             TODO
         </p>
+        <p><a href="#readme-top">Back to top</a></p>
+    </article>
+</section>
+
+<section>
+    <article>
+        <!-- TECHNOLOGIES USED -->
+        <h3 id="technologies"></h3>
+        <ul>
+            <li><a href="https://www.typescriptlang.org/docs/">TypeScript</li>
+            <li><a href="https://discord.js.org/">Discord.js</li>
+        </ul>
         <p><a href="#readme-top">Back to top</a></p>
     </article>
 </section>
