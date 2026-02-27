@@ -29,6 +29,6 @@
         <p>
             TODO
         </p>
-        <p><a href="#readme-top>Back to top</a></p>
+        <p><a href="#readme-top">Back to top</a></p>
     </article>
 </section>
