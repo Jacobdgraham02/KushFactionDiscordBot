@@ -86,7 +86,7 @@ JSON file for later retrieval if necessary
 const commands: any[] = [];
 let database_repository: BotDataRepository;
 let database_connection_manager: DatabaseConnectionManager;
-let custom_event_emitter: CustomEventEmitter = CustomEventEmitter.getCustomEventEmitterInstance();
+const custom_event_emitter: CustomEventEmitter = CustomEventEmitter.getCustomEventEmitterInstance();
 
 /**
  * This function must be asynchronous because it reads files from a specified directory, which takes an unknown amount of time
