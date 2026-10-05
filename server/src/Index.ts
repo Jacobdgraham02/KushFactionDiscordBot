@@ -1,4 +1,5 @@
-import 'dotenv/config';
+import dotenv from 'dotenv';
+dotenv.config();
 
 /*
 Developer-defined imports
@@ -39,6 +40,7 @@ import {UpdateResult} from "mongodb";
 import {Collections} from "./enums/Collections";
 import {IFactionGoals} from "./models/IFactionGoals";
 import SelectMenuHandler from "./event_handlers/select_menu_handler/SelectMenuHandler";
+import { fileURLToPath } from 'node:url';
 
 /*
 Variable values defined in the .env file
@@ -48,13 +50,14 @@ const discord_client_id: string | undefined = process.env.BOT_CLIENT_ID;
 const discord_client_secret: string | undefined = process.env.BOT_CLIENT_SECRET;
 const discord_bot_token: string | undefined = process.env.BOT_TOKEN;
 
-const database_connection_username: string | undefined = process.env.USERNAME;
-const database_connection_password: string | undefined = process.env.PASSWORD;
+const database_connection_username: string | undefined = process.env.DATABASE_USERNAME;
+const database_connection_password: string | undefined = process.env.DATABASE_PASSWORD;
 const database_connection_string: string | undefined = process.env.MONGODB_CONNECTION_STRING;
 const database_name: string | undefined = process.env.DATABASE_NAME;
 const database_collection_name: string | undefined = process.env.DATABASE_COLLECTION_NAME;
-const database_connection_min_pool_size: number | undefined = process.env.DATABASE_CONNECTION_MIN_POOL_SIZE;
-const database_connection_max_pool_size: number | undefined = process.env.DATABASE_CONNECTION_MAX_POOL_SIZE;
+
+const database_connection_min_pool_size: number | undefined = Number(process.env.DATABASE_CONNECTION_MIN_POOL_SIZE)
+const database_connection_max_pool_size: number | undefined = Number(process.env.DATABASE_CONNECTION_MAX_POOL_SIZE);
 
 const kush_faction_server_id: string | undefined = process.env.KUSH_FACTION_ID;
 const kush_faction_the_ogs_role_id: string | undefined = process.env.KUSH_THE_OGS_ROLE_ID;
@@ -63,6 +66,35 @@ const kush_faction_buy_click_on_blu_ray_dvd_role_id: string | undefined = proces
 const kush_faction_big_pimpin_role_id: string | undefined = process.env.KUSH_BIG_PIMPIN_ROLE_ID;
 
 const testing_server_channel_id: string | undefined = process.env.TEST_CHANNEL_ID;
+const testing_server_id: string | undefined = process.env.TEST_SERVER_ID;
+
+console.log(`
+=== ENV DEBUG ===
+
+discord_application_id: ${discord_application_id}
+discord_client_id: ${discord_client_id}
+discord_client_secret: ${discord_client_secret}
+discord_bot_token: ${discord_bot_token}
+
+database_connection_username: ${database_connection_username}
+database_connection_password: ${database_connection_password}
+database_connection_string: ${database_connection_string}
+database_name: ${database_name}
+database_collection_name: ${database_collection_name}
+database_connection_min_pool_size: ${database_connection_min_pool_size}
+database_connection_max_pool_size: ${database_connection_max_pool_size}
+
+kush_faction_server_id: ${kush_faction_server_id}
+kush_faction_the_ogs_role_id: ${kush_faction_the_ogs_role_id}
+kush_faction_kush_boys_role_id: ${kush_faction_kush_boys_role_id}
+kush_faction_buy_click_on_blu_ray_dvd_role_id: ${kush_faction_buy_click_on_blu_ray_dvd_role_id}
+kush_faction_big_pimpin_role_id: ${kush_faction_big_pimpin_role_id}
+
+testing_server_channel_id: ${testing_server_channel_id}
+testing_server_id: ${testing_server_id}
+
+==================
+`);
 
 /**
  * Declaration of custom discord client. You must explicitly define what the bot intends to do in the Discord server, so it has necessary permissions
@@ -129,6 +161,7 @@ async function registerSetupCommandsWithBot(bot_token: string, bot_application_i
 /**
  * Returns a created BotDataRepository class instance so that we can interact with the MongoDB database.
  */
+
 async function createDatabaseConnection(): Promise<void> {
     database_connection_manager = new DatabaseConnectionManager(
         database_connection_string,
@@ -303,7 +336,7 @@ discord_client_instance.login(discord_bot_token);
  */
 async function createBotCategoryAndChannels(guild: Guild): Promise<void> {
         const category_creation_response: CategoryChannel = await guild.channels.create({
-            name: `APA Season 10 bot`,
+            name: `bot`,
             type: ChannelType.GuildCategory
         });
 

@@ -5,13 +5,13 @@
 declare global {
     namespace NodeJS {
         interface ProcessEnv {
-            USERNAME: string;
-            PASSWORD: string;
+            DATABASE_USERNAME: string;
+            DATABASE_PASSWORD: string;
             MONGODB_CONNECTION_STRING: string;
             DATABASE_NAME: string;
             DATABASE_COLLECTION_NAME: string;
-            DATABASE_CONNECTION_MIN_POOL_SIZE: number;
-            DATABASE_CONNECTION_MAX_POOL_SIZE: number;
+            DATABASE_CONNECTION_MIN_POOL_SIZE: string;
+            DATABASE_CONNECTION_MAX_POOL_SIZE: string;
             BOT_APPLICATION_ID: string;
             BOT_CLIENT_ID: string;
             BOT_CLIENT_SECRET: string;
