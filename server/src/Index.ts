@@ -8,7 +8,6 @@ import DatabaseConnectionManager from "./database/mongodb/DatabaseConnectionMana
 import ButtonHandler from "./event_handlers/button_handler/ButtonHandler";
 import FormHandler from "./event_handlers/form_handler/FormHandler";
 import CustomEventEmitter from "./utilities/CustomEventEmitter";
-import {CommandModule} from "./types/CommandModule";
 
 /*
 Native imports from Node.js
@@ -26,13 +25,13 @@ import {
     CategoryChannel,
     Channel,
     ChannelType,
-    Collection, ContainerBuilder, EmbedBuilder,
+    Collection, EmbedBuilder,
     Events,
     GatewayIntentBits,
     Guild,
     MessageFlags,
     REST,
-    Routes, StringSelectMenuInteraction, TextChannel
+    Routes, TextChannel
 } from 'discord.js';
 import {ICommand} from "./interfaces/ICommand";
 import {BotDataRepository} from "./database/mongodb/repository/BotDataRepository";
@@ -41,7 +40,7 @@ import {UpdateResult} from "mongodb";
 import {Collections} from "./enums/Collections";
 import {IFactionGoals} from "./models/IFactionGoals";
 import SelectMenuHandler from "./event_handlers/select_menu_handler/SelectMenuHandler";
-import { fileURLToPath, pathToFileURL } from 'node:url';
+import { pathToFileURL } from 'node:url';
 
 /*
 Variable values defined in the .env file
