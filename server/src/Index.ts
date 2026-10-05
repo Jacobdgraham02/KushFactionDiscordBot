@@ -8,6 +8,7 @@ import DatabaseConnectionManager from "./database/mongodb/DatabaseConnectionMana
 import ButtonHandler from "./event_handlers/button_handler/ButtonHandler";
 import FormHandler from "./event_handlers/form_handler/FormHandler";
 import CustomEventEmitter from "./utilities/CustomEventEmitter";
+import {CommandModule} from "./types/CommandModule";
 
 /*
 Native imports from Node.js
@@ -25,7 +26,7 @@ import {
     CategoryChannel,
     Channel,
     ChannelType,
-    Collection, EmbedBuilder,
+    Collection, ContainerBuilder, EmbedBuilder,
     Events,
     GatewayIntentBits,
     Guild,
@@ -40,7 +41,7 @@ import {UpdateResult} from "mongodb";
 import {Collections} from "./enums/Collections";
 import {IFactionGoals} from "./models/IFactionGoals";
 import SelectMenuHandler from "./event_handlers/select_menu_handler/SelectMenuHandler";
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 /*
 Variable values defined in the .env file
@@ -48,6 +49,7 @@ Variable values defined in the .env file
 const discord_application_id: string | undefined = process.env.BOT_APPLICATION_ID;
 const discord_client_id: string | undefined = process.env.BOT_CLIENT_ID;
 const discord_client_secret: string | undefined = process.env.BOT_CLIENT_SECRET;
+const discord_bot_public_key: string | undefined = process.env.BOT_PUBLIC_KEY;
 const discord_bot_token: string | undefined = process.env.BOT_TOKEN;
 
 const database_connection_username: string | undefined = process.env.DATABASE_USERNAME;
@@ -74,6 +76,7 @@ console.log(`
 discord_application_id: ${discord_application_id}
 discord_client_id: ${discord_client_id}
 discord_client_secret: ${discord_client_secret}
+discord_bot_public_key: ${discord_bot_public_key}
 discord_bot_token: ${discord_bot_token}
 
 database_connection_username: ${database_connection_username}
@@ -121,27 +124,49 @@ const custom_event_emitter: CustomEventEmitter = CustomEventEmitter.getCustomEve
 /**
  * This function must be asynchronous because it reads files from a specified directory, which takes an unknown amount of time
  */
-async function loadSetupCommandsIntoCollection(): Promise<void> {
-    const commands_folder_path: string = path.join(__dirname, "../dist/commands");
+async function loadSetupCommandsIntoCollection(): Promise<string> {
+    const commands_folder_path: string = path.join(process.cwd(),"src","dist","src","commands");
     const filtered_command_files: string[] = fs.
     readdirSync(commands_folder_path)
-        .filter((file: string): boolean => file !== "deploy-commands.ts" && file.endsWith(".js"));
+        .filter((file: string): boolean => file !== "deploy-commands.js");
+
+    if (filtered_command_files.length === 0) {
+        return "There are 0 command files";
+    }
+
     discord_client_instance.discord_commands = new Collection();
 
     for (const command_file of filtered_command_files) {
-        const command_file_path: any = path.join(commands_folder_path, command_file);
-        const command: any = await import(command_file_path);
-        const command_class: any = command.default;
+        const command_file_path: string = path.join(
+            commands_folder_path,
+            command_file
+        );
+        const command_file_url: string = pathToFileURL(command_file_path).href;
 
-        if (typeof command_class === "function") {
-            const command_instance: ICommand = new command_class();
-            discord_client_instance.discord_commands.set(
-                command_instance.data.name,
-                command_instance
-            );
-            commands.push(command_instance.data);
+        const command = await import(command_file_url);
+        /**
+         * .default?.default is used because the actual class definition is wrapped in an object, like below:
+         * default: {
+         *  { default: Class }
+         * }
+         */
+        const CommandClass = command.default?.default;
+
+        if (typeof CommandClass !== "function") {
+            console.log(`Skipping ${command_file} because default export is not a class or function`);
+            continue;
         }
-    }
+
+        const command_instance: ICommand = new CommandClass();
+        
+        discord_client_instance.discord_commands.set(
+            command_instance.data.name,
+            command_instance
+        );
+
+        commands.push(command_instance.data);
+    };
+    return "Commands loaded into collection"
 }
 
 /**
@@ -151,11 +176,17 @@ async function loadSetupCommandsIntoCollection(): Promise<void> {
  * @param bot_application_id the id of the bot as it exists on Discord
  * @param guild_id the id of the server as it exists on Discord
  */
-async function registerSetupCommandsWithBot(bot_token: string, bot_application_id: string, guild_id: string): Promise<void> {
-       if (bot_token && bot_application_id && guild_id) {
-              const rest = new REST({version:"10"}).setToken(bot_token);
-                await rest.put(Routes.applicationGuildCommands(bot_application_id, guild_id), { body: commands });
-       }
+async function registerSetupCommandsWithBot(bot_token: string, bot_application_id: string, guild_id: string): Promise<string> {
+        if (!bot_token || !bot_application_id || !guild_id) { 
+            return "Missing bot token, application ID, or guild ID"
+        }
+        try {
+            const rest = new REST({version:"10"}).setToken(bot_token);
+            await rest.put(Routes.applicationGuildCommands(bot_application_id, guild_id), { body: commands });
+            return "Commands registered successfully"
+        } catch (error) {
+            return `There was an error registering commands with the bot: ${error}`;
+        }
 }
 
 /**
@@ -198,6 +229,12 @@ discord_client_instance.on(Events.ClientReady,
      */
     async(): Promise<void> => {
         console.log("Bot is ready");
+        if (discord_bot_token && discord_application_id && testing_server_id) {
+            const load_commands_response = await loadSetupCommandsIntoCollection();
+            const register_setup_commands_response = await registerSetupCommandsWithBot(discord_bot_token, discord_application_id, testing_server_id)
+            console.log(`Load commands: ${load_commands_response}`);
+            console.log(`Registering setup commands: ${register_setup_commands_response}`);
+        }
         // try {
         //     if (channel && channel.isSendable()) {
         //         channel.send({
@@ -320,12 +357,12 @@ discord_client_instance.on(Events.GuildCreate,
         }
         await createDatabaseConnection();
         if (guild) {
-            // await createBotCategoryAndChannels(guild);
+            await createBotCategoryAndChannels(guild);
         }
         await loadSetupCommandsIntoCollection();
-        if (discord_bot_token) {
-            await registerSetupCommandsWithBot(discord_bot_token, discord_application_id, kush_faction_server_id);
-        }
+        if (discord_bot_token && testing_server_id) {
+            await registerSetupCommandsWithBot(discord_bot_token, discord_application_id, testing_server_id);
+        } 
 });
 
 discord_client_instance.login(discord_bot_token);

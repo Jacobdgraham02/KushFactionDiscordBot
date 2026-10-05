@@ -6,7 +6,7 @@ import {MessageFlags, SlashCommandBuilder} from "discord.js";
  */
 export default class CheckBotHeartbeat implements ICommand {
     data: SlashCommandBuilder = new SlashCommandBuilder()
-        .setName(`check-heartbeat`)
+        .setName(`heartbeat`)
         .setDescription(`Check if the bot is active`)
 
     authorization_role_name: string[] = []
