@@ -33,7 +33,7 @@ import {
     REST,
     Routes, TextChannel
 } from 'discord.js';
-import {ICommand} from "./interfaces/ICommand";
+import {ICommand} from "./interface/ICommand";
 import {BotDataRepository} from "./database/mongodb/repository/BotDataRepository";
 import IBotDataDocument from "./models/IBotDataDocument";
 import {UpdateResult} from "mongodb";

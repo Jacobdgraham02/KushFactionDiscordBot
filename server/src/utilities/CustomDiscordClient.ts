@@ -1,5 +1,5 @@
 import {Client, ClientOptions, Collection} from 'discord.js';
-import {ICommand} from "../interfaces/ICommand";
+import {ICommand} from "../interface/ICommand";
 
 /*
 This class is used to create a custom Discord client that supports additional functionality that is not found in the traditional Discord.js Client class.

@@ -1,5 +1,5 @@
 import {MessageFlags, SlashCommandBuilder} from "discord.js";
-import {ICommand} from "../interfaces/ICommand";
+import {ICommand} from "../interface/ICommand";
 import CustomEventEmitter from "../utilities/CustomEventEmitter";
 
 export default class ShowBotChannelData implements ICommand {

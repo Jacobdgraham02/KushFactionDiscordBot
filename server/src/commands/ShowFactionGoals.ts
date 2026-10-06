@@ -1,4 +1,4 @@
-import {ICommand} from "../interfaces/ICommand";
+import {ICommand} from "../interface/ICommand";
 import {MessageFlags, SlashCommandBuilder} from "discord.js";
 import CustomEventEmitter from "../utilities/CustomEventEmitter";
 

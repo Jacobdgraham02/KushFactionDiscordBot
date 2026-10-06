@@ -1,5 +1,5 @@
 import {SlashCommandBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, AnyComponentBuilder} from "discord.js";
-import {ICommand} from "../interfaces/ICommand";
+import {ICommand} from "../interface/ICommand";
 
 /**
  * Creates a button which will allow users to grant themselves administrative access to the bot (able to change configuration settings)

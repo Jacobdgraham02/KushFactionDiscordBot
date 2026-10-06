@@ -5,7 +5,7 @@ import {
     ActionRowBuilder,
     AnyComponentBuilder,
 } from "discord.js";
-import {ICommand} from "../interfaces/ICommand";
+import {ICommand} from "../interface/ICommand";
 
 /**
  * Creates a button which allow users to update the last time at which crops were watered
