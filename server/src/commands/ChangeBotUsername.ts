@@ -1,9 +1,5 @@
 import {ICommand} from "../interface/ICommand";
 import {
-    ActionRowBuilder,
-    AnyComponentBuilder,
-    ButtonBuilder,
-    ButtonStyle,
     MessageFlags,
     SlashCommandBuilder, SlashCommandOptionsOnlyBuilder
 } from "discord.js";

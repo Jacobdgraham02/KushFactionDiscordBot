@@ -1,7 +1,6 @@
 import {ICommand} from "../interface/ICommand";
 import {
     ActionRowBuilder,
-    AnyComponentBuilder,
     ModalBuilder,
     SlashCommandBuilder,
     TextInputBuilder,

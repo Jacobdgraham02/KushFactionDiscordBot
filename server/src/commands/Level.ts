@@ -21,7 +21,5 @@ export default class Level implements ICommand {
                 });
                 return;
             }
-
-            
         }
 }

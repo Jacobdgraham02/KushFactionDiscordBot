@@ -1,6 +1,3 @@
-import {Collection} from "mongodb";
-import {Collections} from "../enums/Collections";
-import {IFactionGoals} from "./IFactionGoals";
 
 /**
  * The expected structure of the returned Document from the collection 'bot_data'

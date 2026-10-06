@@ -1,5 +1,5 @@
 import {DatabaseRepository} from "../../repository/DatabaseRepository";
-import {Collection, Db, DeleteResult, FindCursor, UpdateResult} from "mongodb";
+import {Collection, Db, DeleteResult, UpdateResult} from "mongodb";
 import IBotDataDocument from "../../../models/IBotDataDocument";
 import {IFactionGoals} from "../../../models/IFactionGoals";
 import IFactionResources from "../../../models/IFactionResources";
