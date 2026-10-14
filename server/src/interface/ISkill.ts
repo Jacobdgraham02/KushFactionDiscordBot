@@ -3,6 +3,7 @@
  * all of the below fields
  */
 export interface ISkill {
+    wiki_link: string;
     skill_name: string;
     skill_description: string;
     max_level: number;

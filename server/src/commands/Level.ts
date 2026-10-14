@@ -26,7 +26,7 @@ export default class Level implements ICommand {
             const skill_data: ISkill = loadSkillJsonFile(["src","json","skills"], `${skill_name}`,".json", "utf-8");
             const discord_message = 
 `
-**${skill_data.skill_name}**
+**[${skill_data.skill_name}](${skill_data.wiki_link})**
 ${skill_data.skill_description}
 
 **Max level:** ${skill_data.max_level}
