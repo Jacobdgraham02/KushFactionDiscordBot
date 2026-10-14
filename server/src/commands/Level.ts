@@ -5,7 +5,7 @@ import { ISkill } from "../interface/ISkill";
 
 export default class Level implements ICommand {
     data: SlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
-        .setName(`skill-name`)
+        .setName(`level`)
         .setDescription(`Use this command to find out ways to level a skill`)
         .addStringOption(option => 
             option.setName(`skill-name`)
@@ -15,7 +15,7 @@ export default class Level implements ICommand {
         authorization_role_name: string[] = [];
 
         async execute(interaction: any): Promise<void> {
-            const skill_name: string = interaction.options.get("skill-name");
+            const skill_name: string = interaction.options.getString("skill-name", true);
             if (!skill_name) {
                 await interaction.reply({
                     content: `Skill name is invalid. Run the command again and ensure you have entered a proper skill name that exists in Zomboid`,
@@ -23,20 +23,19 @@ export default class Level implements ICommand {
                 });
                 return;
             }
-            const skill_data: ISkill[] = loadSkillJsonFile(["src","json","skills"], ".json", "utf-8");
-            const skill = skill_data[0];
+            const skill_data: ISkill = loadSkillJsonFile(["src","json","skills"], `${skill_name}`,".json", "utf-8");
             const discord_message = 
-            `
-**${skill.skill_name}**
-${skill.skill_description}
+`
+**${skill_data.skill_name}**
+${skill_data.skill_description}
 
-**Max level:** ${skill.max_level}
+**Max level:** ${skill_data.max_level}
 
 **Required items:**
-${skill.required_items.join("\n")}
+${skill_data.required_items.join("\n")}
 
 **Leveling:**
-${skill.leveling.join("\n")}
+${skill_data.leveling.join("\n")}
 `;
 
             await interaction.reply({

@@ -35,32 +35,22 @@ function isSkill(value: unknown): value is ISkill {
  * @param encoding the encoding to use for the file, for example `utf-8`
  * @returns array of {@link ISkill} objects 
  */
-export function loadSkillJsonFile(file_path_portions: string[], file_ending: string, encoding: BufferEncoding) {
-    let partial_folder_path: string = ``;
-    const file_contents_array: ISkill[] = [];
-    for (const file_path_portion of file_path_portions) {
-        partial_folder_path += "/" + file_path_portion;
+export function loadSkillJsonFile(file_path_portions: string[], skill_name: string, file_ending: string, encoding: BufferEncoding): ISkill {
+    const folder_path: string = path.join(process.cwd(), ...file_path_portions);
+
+    const file_path: string = path.join(folder_path, `${skill_name}${file_ending}`);
+
+    if (!fs.existsSync) {
+        throw new Error(`The JSON file ${skill_name}${file_ending} does not exist`);
     }
-    const folder_path:string = path.join(process.cwd(), partial_folder_path);
-    const files: string[] = readdirSync(
-        folder_path
-    ).filter((file:string):boolean => file.endsWith(file_ending));
 
-    for (const file of files) {
-        const file_path = path.join(folder_path, file);
-        const file_contents = fs.readFileSync(file_path, encoding);
-        
-        if (!file_contents) {
-            continue;
-        }
+    const file_contents = fs.readFileSync(file_path, encoding);
 
-        const parsedJson: unknown = JSON.parse(file_contents);
+    const parsedJson: ISkill = JSON.parse(file_contents);
 
-        if (!isSkill(parsedJson)) {
-            continue;
-        }
-
-        file_contents_array.push(parsedJson);
+    if (!isSkill(parsedJson)) {
+        throw new Error(`The parsed JSON is not formatted properly`);
     }
-    return file_contents_array;
+
+    return parsedJson;
 }
