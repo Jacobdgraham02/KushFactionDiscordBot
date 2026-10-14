@@ -6,6 +6,7 @@ export interface ISkill {
     wiki_link: string;
     skill_name: string;
     skill_description: string;
+    skill_category: string;
     max_level: number;
     required_items: string[];
     leveling: string[];

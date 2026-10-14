@@ -1,14 +1,20 @@
 {
     "wiki_link": "https://pzwiki.net/wiki/Carving",
     "skill_name": "Carving",
-    "skill_description": "Make items out of wood",
+    "skill_category": "Crafting",
+    "skill_description": "Carve items out of various materials, mostly wood and bones",
     "max_level": 10,
     "required_items": [
-        "knife",
-        "surface"
+        "(At least one) Any wooden object, such as tree branch, wooden rod, scrap wood, etc.",
+        "(Not dull) bladed object",
+        "Crafting surface"
     ],
     "leveling": [
-        "1. First test step",
-        "2. Second test step"
+        "1. (Level 0) (10 XP) Whittle sapling and tree branch into a long stick, then a spear",
+        "2. (Level 0) (5 XP) Carve tree branch into a stake",
+        "3. (Level 1) (60 XP) Whittle tree branch into a wooden rod, then wooden rod into 4 small handles, then small handles into wooden spoons",
+        "4. (Level 1) (30 XP) Carve scrap wood into 2 small handles, then turn small handles into 2 wooden spoons",
+        "5. (Level 2+) (140 XP) With 4 wooden spoons from each tree branch, carve each spoon into a wooden fork",
+        "6. (Level 2+) (20 XP) Carve a large branch into a plank"
     ]
 }

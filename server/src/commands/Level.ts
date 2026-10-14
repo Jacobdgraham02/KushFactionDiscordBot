@@ -27,8 +27,8 @@ export default class Level implements ICommand {
             const discord_message = 
 `
 **[${skill_data.skill_name}](${skill_data.wiki_link})**
-${skill_data.skill_description}
-
+**Category:** ${skill_data.skill_category}
+**Description:** ${skill_data.skill_description}
 **Max level:** ${skill_data.max_level}
 
 **Required items:**

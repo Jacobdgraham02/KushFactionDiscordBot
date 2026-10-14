@@ -231,8 +231,6 @@ discord_client_instance.on(Events.ClientReady,
         if (discord_bot_token && discord_application_id && testing_server_id) {
             const load_commands_response = await loadSetupCommandsIntoCollection();
             const register_setup_commands_response = await registerSetupCommandsWithBot(discord_bot_token, discord_application_id, testing_server_id)
-            console.log(`Load commands: ${load_commands_response}`);
-            console.log(`Registering setup commands: ${register_setup_commands_response}`);
         }
         // try {
         //     if (channel && channel.isSendable()) {
