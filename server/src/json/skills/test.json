@@ -1,0 +1,13 @@
+{
+    "skill_name": "Carving",
+    "skill_description": "Make items out of wood",
+    "max_level": 10,
+    "required_items": [
+        "knife",
+        "surface"
+    ],
+    "leveling": [
+        "1. First test step",
+        "2. Second test step"
+    ]
+}

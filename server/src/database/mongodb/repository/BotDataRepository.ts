@@ -1,4 +1,3 @@
-import {DatabaseRepository} from "../../repository/DatabaseRepository";
 import {Collection, Db, DeleteResult, UpdateResult} from "mongodb";
 import IBotDataDocument from "../../../models/IBotDataDocument";
 import {IFactionGoals} from "../../../models/IFactionGoals";
@@ -9,7 +8,7 @@ import {Collections} from "../../../enums/Collections";
 /**
  * Created a base CRUD class that is used to interact with a specific mongodb collection
  */
-export class BotDataRepository extends DatabaseRepository<any> {
+export class BotDataRepository {
     private collection: Collection<any>
 
     /**
@@ -19,7 +18,6 @@ export class BotDataRepository extends DatabaseRepository<any> {
      * @param collection_name name of mongodb database collection
      */
     constructor(private database_instance: Db, private collection_name: Collections) {
-        super();
         this.collection = this.getCollection(collection_name);
     }
 
